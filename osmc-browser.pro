@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        browser.cpp
+        browser.cpp \
+    logger.cpp
 
-HEADERS  += browser.h
+HEADERS  += browser.h \
+    logger.h
 
 FORMS    += browser.ui
