@@ -22,6 +22,9 @@ public:
 
 private:
     Ui::browser *ui;
+
+private slots:
+    void handleUrl();
 };
 
 #endif // BROWSER_H
