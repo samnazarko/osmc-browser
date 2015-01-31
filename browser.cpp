@@ -6,30 +6,26 @@
 #include "browser.h"
 #include "ui_browser.h"
 #include <QDebug>
+#include <QPushButton>
+#include <QRect>
+#include <QWebView>
+#include <QTabWidget>
+#include "browsertab.h"
 
 browser::browser(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::browser)
 {
     ui->setupUi(this);
-    connect(ui->urlBar, SIGNAL(returnPressed()), this, SLOT(handleUrl()));
+    /* first, remove all tabs, coming from the ui designer. */
+    ui->tabWidget->removeTab(1);
+    ui->tabWidget->removeTab(0);
+
+    /* now add our initial tab */
+    ui->tabWidget->addTab(new BrowserTab(ui->tabWidget), BrowserTab::INITIAL_TITLE);
 }
 
 browser::~browser()
 {
     delete ui;
-}
-
-void browser::handleUrl()
-{
-    qDebug() << ui->urlBar->text();
-    if (ui->tabWidget->currentIndex() == 0)
-    {
-        qDebug() << "tab1 is active!";
-        ui->webView1->load(QUrl(ui->urlBar->text()));
-    } else
-    {
-        qDebug() << "tab2 is active";
-        ui->webView2->load(QUrl(ui->urlBar->text()));
-    }
 }
