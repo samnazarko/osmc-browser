@@ -134,7 +134,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>32</width>
          <height>25</height>
         </size>
        </property>
@@ -143,6 +143,14 @@
          <width>16777215</width>
          <height>35</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+     border: 1px solid #8f8f91;
+     border-radius: 12px;
+     min-width: 30px;
+ }
+</string>
        </property>
       </widget>
      </item>

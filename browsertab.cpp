@@ -17,6 +17,9 @@ BrowserTab::BrowserTab(QWidget *parent) :
     ui->progressbar->setMaximum(100);
     ui->progressbar->setValue(100);
 
+    /* http://stackoverflow.com/questions/13327818/how-to-prevent-the-default-blue-border-being-drawn-on-qlineedit-focus */
+    ui->urlInput->setAttribute(Qt::WA_MacShowFocusRect, 0);
+
     connect(ui->btnNewTab, SIGNAL(clicked()), this, SLOT(createAndSwitchTab()));
     connect(ui->btnRemoveTab, SIGNAL(clicked()), this, SLOT(removeTab()));
     connect(ui->urlInput, SIGNAL(returnPressed()), this, SLOT(evaluteUrlField()));
@@ -83,7 +86,9 @@ void BrowserTab::onLoadFinished(bool success)
     ui->statusLabel->setText(success ? "Ready" : "Failed");
     ui->progressbar->setMaximum(1);
     ui->progressbar->setValue(1);
-    tabWidget->setTabText(tabWidget->currentIndex(), ui->webView->title());
+    if (success)
+        tabWidget->setTabText(tabWidget->currentIndex(), ui->webView->title());
+
     ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     ui->webView->show();
 }
