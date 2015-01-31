@@ -57,6 +57,11 @@ void BrowserTab::evaluteUrlField()
 {
     currentUrlIndex++;
     QString url = ui->urlInput->text();
+    if (url.startsWith("http") == false)
+    {
+        url = "http://" + url;
+        ui->urlInput->setText(url);
+    }
     urlList->append(url); /* FIXME we don't limit the number of stored URLs */
     ui->webView->load(url);
 }
