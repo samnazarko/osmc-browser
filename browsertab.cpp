@@ -119,7 +119,7 @@ void BrowserTab::goBack()
 
 void BrowserTab::goForward()
 {
-    if (urlList->size() > 1 && currentUrlIndex < (urlList - 1)) {
+    if (urlList->size() > 1 && currentUrlIndex < (urlList->size() - 1)) {
         QString newUrl = urlList->at(--currentUrlIndex);
         qDebug() << "moving forwart to URL " << newUrl;
         qDebug() << "URLs left befor the current one: " << currentUrlIndex;
