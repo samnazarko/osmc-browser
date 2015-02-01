@@ -23,6 +23,7 @@ private:
     QTabWidget* tabWidget;
     QStringList* urlList;
     int currentUrlIndex = -1;
+    bool isLoading = false;
 
 private slots:
     void createAndSwitchTab();
@@ -34,5 +35,6 @@ private slots:
     void onLoadStarted();
     void onLoadProgress(int progress);
     void onLoadFinished(bool success);
+    void setTitle(QString title);
 };
 #endif // BROWSERTAB_H

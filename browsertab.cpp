@@ -29,6 +29,7 @@ BrowserTab::BrowserTab(QWidget *parent) :
     connect(ui->webView, SIGNAL(loadProgress(int)), this, SLOT(onLoadProgress(int)));
     connect(ui->webView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
     connect(ui->webView, SIGNAL(linkClicked(QUrl)), this, SLOT(evaluateClickedLink(QUrl)));
+    connect(ui->webView, SIGNAL(titleChanged(QString)), this, SLOT(setTitle(QString)));
 
     /* make sure we get url-input focus. Required because just setFocus will not work
      * because the widget isn't fully constructed yet
@@ -41,11 +42,11 @@ void BrowserTab::createAndSwitchTab()
 {
     int newIndex = this->tabWidget->addTab(new BrowserTab(tabWidget), BrowserTab::INITIAL_TITLE);
     this->tabWidget->setCurrentIndex(newIndex);
-
 }
 
 void BrowserTab::removeTab()
 {
+    checkLoading();
     if (tabWidget->count() > 1)
     {
         this->tabWidget->removeTab(this->tabWidget->currentIndex());
@@ -55,6 +56,7 @@ void BrowserTab::removeTab()
 
 void BrowserTab::evaluteUrlField()
 {
+    checkLoading();
     currentUrlIndex++;
     QString url = ui->urlInput->text();
     if (url.startsWith("http") == false)
@@ -68,6 +70,7 @@ void BrowserTab::evaluteUrlField()
 
 void BrowserTab::evaluateClickedLink(QUrl url)
 {
+    checkLoading();
     qDebug() << "clicked " << url.toString();
     urlList->append(url.toString());
     ui->urlInput->setText(url.toString());
@@ -76,8 +79,9 @@ void BrowserTab::evaluateClickedLink(QUrl url)
 
 void BrowserTab::onLoadStarted()
 {
+    isLoading = true;
     ui->statusLabel->setText("Loading...");
-    ui->progressbar->setValue(0);
+    ui->progressbar->setValue(0);    
 }
 
 void BrowserTab::onLoadProgress(int progress)
@@ -91,15 +95,18 @@ void BrowserTab::onLoadFinished(bool success)
     ui->statusLabel->setText(success ? "Ready" : "Failed");
     ui->progressbar->setMaximum(1);
     ui->progressbar->setValue(1);
+
     if (success)
-        tabWidget->setTabText(tabWidget->currentIndex(), ui->webView->title());
+        setTitle(ui->webView->title());
 
     ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     ui->webView->show();
+    isLoading = false;
 }
 
 void BrowserTab::goBack()
 {
+    checkLoading();
     if (urlList->size() > 1)
     {
         QString newUrl = urlList->at(++currentUrlIndex);
@@ -117,6 +124,19 @@ void BrowserTab::goForward()
     }
 }
 
+void BrowserTab::setTitle(QString title)
+{
+    tabWidget->setTabText(tabWidget->currentIndex(), title);
+}
+
+void BrowserTab::checkLoading()
+{
+    if (isLoading)
+    {
+        ui->webView->stop();
+        isLoading = false;
+    }
+}
 
 BrowserTab::~BrowserTab()
 {
