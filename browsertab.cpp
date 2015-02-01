@@ -34,7 +34,7 @@ BrowserTab::BrowserTab(QWidget *parent) :
      * because the widget isn't fully constructed yet
      * see http://stackoverflow.com/questions/526761/set-qlineedit-focus-in-qt
      */
-    QTimer::singleShot(0, ui->urlInput, SLOT(setFocus()));
+    QTimer::singleShot(0, ui->urlInput, SLOT(setFocus()));    
 }
 
 void BrowserTab::createAndSwitchTab()

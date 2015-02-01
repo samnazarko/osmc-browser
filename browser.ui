@@ -24,6 +24,7 @@
       <property name="styleSheet">
        <string notr="true">QTabWidget::pane { /* The tab widget frame */
     border: 2px solid #C2C7CB;
+	border-radius: 10px;
 }
 
 QTabWidget::tab-bar {
