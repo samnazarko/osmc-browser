@@ -31,7 +31,6 @@ BrowserTab::BrowserTab(QWidget *parent) :
     connect(ui->webView, SIGNAL(linkClicked(QUrl)), this, SLOT(evaluateClickedLink(QUrl)));
     connect(ui->webView, SIGNAL(titleChanged(QString)), this, SLOT(setTitle(QString)));
 
-
     /* make sure we get url-input focus. Required because just setFocus will not work
      * because the widget isn't fully constructed yet
      * see http://stackoverflow.com/questions/526761/set-qlineedit-focus-in-qt
@@ -62,35 +61,12 @@ void BrowserTab::evaluteUrlField()
     QString url = ui->urlInput->text();
     if (url.startsWith("http") == false)
     {
-        url = QString("http://").append(url);
+        url = "http://" + url;
         ui->urlInput->setText(url);
     }
     urlList->append(url); /* FIXME we don't limit the number of stored URLs */
     ui->webView->load(url);
-
-    /* experimental logic to see why some pages may not be loaded
-     * for example: http://google.de leads to a 301 redirect
-     * which again seems to run against ssl connections via google magic
-     * http://stackoverflow.com/questions/8362506/qwebview-qt-webkit-wont-open-some-ssl-pages-redirects-not-allowed
-     */
-    connect(ui->webView->page()->networkAccessManager(),
-             SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )),
-             this,
-             SLOT(handleSslErrors(QNetworkReply*, const QList<QSslError> & )));
 }
-
-void BrowserTab::handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors)
-{
-    qDebug() << "handleSslErrors: ";
-    foreach (QSslError e, errors)
-    {
-        qDebug() << "ssl error: " << e;
-    }
-
-    reply->ignoreSslErrors();
-}
-
-
 
 void BrowserTab::evaluateClickedLink(QUrl url)
 {

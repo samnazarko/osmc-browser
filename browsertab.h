@@ -4,8 +4,6 @@
 #include <QWidget>
 #include <QTabWidget>
 #include <QUrl>
-#include <QNetworkReply>
-#include <QSslError>
 
 namespace Ui {
 class BrowserTab;
@@ -39,6 +37,5 @@ private slots:
     void onLoadFinished(bool success);
     void setTitle(QString title);
     void checkLoading();
-    void handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors);
 };
 #endif // BROWSERTAB_H
