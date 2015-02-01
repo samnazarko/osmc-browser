@@ -36,5 +36,6 @@ private slots:
     void onLoadProgress(int progress);
     void onLoadFinished(bool success);
     void setTitle(QString title);
+    void checkLoading();
 };
 #endif // BROWSERTAB_H

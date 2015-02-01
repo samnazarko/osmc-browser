@@ -107,9 +107,11 @@ void BrowserTab::onLoadFinished(bool success)
 void BrowserTab::goBack()
 {
     checkLoading();
-    if (urlList->size() > 1)
+    if (urlList->size() > 1 && currentUrlIndex > 0)
     {
         QString newUrl = urlList->at(++currentUrlIndex);
+        qDebug() << "going back to URL " << newUrl;
+        qDebug() << "URLs left befor the after the current one: " << (urlList->size() - currentUrlIndex);
         ui->urlInput->setText(newUrl);
         this->evaluteUrlField();
     }
@@ -117,8 +119,10 @@ void BrowserTab::goBack()
 
 void BrowserTab::goForward()
 {
-    if (urlList->size() > 1) {
+    if (urlList->size() > 1 && currentUrlIndex < (urlList - 1)) {
         QString newUrl = urlList->at(--currentUrlIndex);
+        qDebug() << "moving forwart to URL " << newUrl;
+        qDebug() << "URLs left befor the current one: " << currentUrlIndex;
         ui->urlInput->setText(newUrl);
         this->evaluteUrlField();
     }
