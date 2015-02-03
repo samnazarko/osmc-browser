@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui webkitwidgets widgets
+CONFIG   += console
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,9 +15,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         browser.cpp \
-    logger.cpp
+    logger.cpp \
+    browsertab.cpp
 
 HEADERS  += browser.h \
-    logger.h
+    logger.h \
+    browsertab.h
 
-FORMS    += browser.ui
+FORMS    += browser.ui \
+    browsertab.ui
